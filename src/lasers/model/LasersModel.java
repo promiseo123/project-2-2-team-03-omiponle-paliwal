@@ -28,16 +28,22 @@ public class LasersModel {
 
     public String status;
 
-    public LasersModel(String filename) throws IOException {
+    public LasersModel(String filename){
         this.observers = new LinkedList<>();
         File safeFile = new File(filename);
-        this.reader = new BufferedReader(new FileReader((safeFile)));
-        String text = reader.readLine();
-        String[] cord = text.split(" ");
-        this.rows=Integer.parseInt(cord[0]);
-        this.cols=Integer.parseInt(cord[1]);
-        this.floor=new Object[rows][cols];
-        SafeTheBuilder();
+        try {
+            this.reader = new BufferedReader(new FileReader((safeFile)));
+            String text = reader.readLine();
+            String[] cord = text.split(" ");
+            this.rows=Integer.parseInt(cord[0]);
+            this.cols=Integer.parseInt(cord[1]);
+            this.floor=new Object[rows][cols];
+            SafeTheBuilder();
+
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+
     }
 
     /**

@@ -12,7 +12,7 @@ import lasers.model.Observer;
  * You should create the model here, and then implement the update method.
  *
  * @author Sean Strout @ RIT CS
- * @author YOUR NAME HERE
+ * @author Parth Paliwal, Promise Omiponle
  */
 public class LasersPTUI implements Observer<LasersModel, ModelData> {
     /** The UI's connection to the model */
@@ -24,12 +24,7 @@ public class LasersPTUI implements Observer<LasersModel, ModelData> {
      * @throws FileNotFoundException if file not found
      */
     public LasersPTUI(String filename) throws FileNotFoundException {
-        try {
-            this.model = new LasersModel(filename);
-        } catch (FileNotFoundException fnfe) {
-            System.out.println(fnfe.getMessage());
-            System.exit(-1);
-        }
+        this.model = new LasersModel(filename);
         this.model.addObserver(this);
     }
 
@@ -42,6 +37,6 @@ public class LasersPTUI implements Observer<LasersModel, ModelData> {
 
     @Override
     public void update(LasersModel model, ModelData data) {
-        // TODO
+        this.getModel().display();
     }
 }
