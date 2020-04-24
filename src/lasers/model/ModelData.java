@@ -5,7 +5,7 @@ package lasers.model;
  * to the view when the model changes state.
  *
  * @author RIT CS
- * @author YOUR NAME HERE
+ * @author PROMISE OMIPONLE, PARTH PALIWAL
  */
 public class ModelData {
 }
