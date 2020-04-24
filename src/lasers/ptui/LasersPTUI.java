@@ -1,6 +1,7 @@
 package lasers.ptui;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import lasers.model.LasersModel;
 import lasers.model.ModelData;
@@ -23,7 +24,7 @@ public class LasersPTUI implements Observer<LasersModel, ModelData> {
      * @param filename the safe file name
      * @throws FileNotFoundException if file not found
      */
-    public LasersPTUI(String filename) throws FileNotFoundException {
+    public LasersPTUI(String filename) throws IOException {
         this.model = new LasersModel(filename);
         this.model.addObserver(this);
     }
