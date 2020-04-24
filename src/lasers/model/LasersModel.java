@@ -144,13 +144,15 @@ public class LasersModel {
                     if((row-1>=0)|| (row+1<this.rows)) {
                         for (int d=row-1; d>=0; d--) {
                             if (this.floor[d][c].equals("L")||this.floor[d][c].equals("0")||this.floor[d][c].equals("1")
-                            ||this.floor[d][c].equals("3")||this.floor[d][c].equals("4")) {
+                                    ||this.floor[d][c].equals("2") ||this.floor[d][c].equals("3")
+                                    ||this.floor[d][c].equals("4")) {
                                 break;
                             }
                         }
                         for (int e=row+1; e<this.rows; e++) {
                             if (this.floor[e][c].equals("L")||this.floor[e][c].equals("0")||this.floor[e][c].equals("1")
-                                    ||this.floor[e][c].equals("3")||this.floor[e][c].equals("4")) {
+                                    ||this.floor[e][c].equals("2")||this.floor[e][c].equals("3")
+                                    ||this.floor[e][c].equals("4")) {
                                 break;
                             }
                         }
@@ -158,7 +160,8 @@ public class LasersModel {
                         this.floor[row][c]=".";
                     }
                 } else if (this.floor[row][c].equals("X")||this.floor[row][c].equals("0")||this.floor[row][c].equals("1")
-                        ||this.floor[row][c].equals("3")||this.floor[row][c].equals("4")) {
+                        ||this.floor[row][c].equals("2")||this.floor[row][c].equals("3")
+                        ||this.floor[row][c].equals("4")) {
                     break;
                 }
                 else if (this.floor[row][c].equals("L")) {
@@ -171,13 +174,15 @@ public class LasersModel {
                 if(this.floor[r][col].equals("*")) {
                     if((col-1>=0)|| (col+1<this.cols)) {
                         for (int d=col-1; d>=0; d--) {
-                            if (this.floor[row][d].equals("L")||this.floor[row][d].equals("0")||this.floor[row][d].equals("1")
+                            if (this.floor[row][d].equals("L")||this.floor[row][d].equals("0")
+                                    ||this.floor[row][d].equals("1")||this.floor[row][d].equals("2")
                                     ||this.floor[row][d].equals("3")||this.floor[row][d].equals("4")) {
                                 break;
                             }
                         }
                         for (int e=row+1; e<this.rows; e++) {
-                            if (this.floor[row][e].equals("L")||this.floor[row][e].equals("0")||this.floor[row][e].equals("1")
+                            if (this.floor[row][e].equals("L")||this.floor[row][e].equals("0")
+                                    ||this.floor[row][e].equals("1")||this.floor[row][e].equals("2")
                                     ||this.floor[row][e].equals("3")||this.floor[row][e].equals("4")) {
                                 break;
                             }
@@ -185,7 +190,8 @@ public class LasersModel {
                     } else {
                         this.floor[r][col]=".";
                     }
-                } else if (this.floor[r][col].equals("X")||this.floor[r][col].equals("0")||this.floor[r][col].equals("1")
+                } else if (this.floor[r][col].equals("X")||this.floor[r][col].equals("0")
+                        ||this.floor[r][col].equals("1")||this.floor[r][col].equals("2")
                         ||this.floor[r][col].equals("3")||this.floor[r][col].equals("4")) {
                     break;
                 } else if (this.floor[r][col].equals("L")) {
@@ -199,13 +205,15 @@ public class LasersModel {
                     if(this.floor[row][c].equals("*")) {
                         if((row-1>=0)|| (row+1<this.rows)) {
                             for (int d=row-1; d>=0; d--) {
-                                if (this.floor[d][c].equals("L")||this.floor[d][c].equals("0")||this.floor[d][c].equals("1")
+                                if (this.floor[d][c].equals("L")||this.floor[d][c].equals("0")
+                                        ||this.floor[d][c].equals("1")||this.floor[d][c].equals("2")
                                         ||this.floor[d][c].equals("3")||this.floor[d][c].equals("4")) {
                                     break;
                                 }
                             }
                             for (int e=row+1; e<this.rows; e++) {
-                                if (this.floor[e][c].equals("L")||this.floor[e][c].equals("0")||this.floor[e][c].equals("1")
+                                if (this.floor[e][c].equals("L")||this.floor[e][c].equals("0")
+                                        ||this.floor[e][c].equals("1")||this.floor[e][c].equals("2")
                                         ||this.floor[e][c].equals("3")||this.floor[e][c].equals("4")) {
                                     break;
                                 }
@@ -213,7 +221,8 @@ public class LasersModel {
                         } else {
                             this.floor[row][c]=".";
                         }
-                    } else if (this.floor[row][c].equals("X")||this.floor[row][c].equals("0")||this.floor[row][c].equals("1")
+                    } else if (this.floor[row][c].equals("X")||this.floor[row][c].equals("0")
+                            ||this.floor[row][c].equals("1")||this.floor[row][c].equals("2")
                             ||this.floor[row][c].equals("3")||this.floor[row][c].equals("4")) {
                         break;
                     } else if (this.floor[row][c].equals("L")) {
@@ -228,13 +237,15 @@ public class LasersModel {
                     if(this.floor[r][col].equals("*")) {
                         if((col-1>=0)|| (col+1<this.cols)) {
                             for (int d=col-1; d>=0; d--) {
-                                if (this.floor[row][d].equals("L")||this.floor[row][d].equals("0")||this.floor[row][d].equals("1")
+                                if (this.floor[row][d].equals("L")||this.floor[row][d].equals("0")
+                                        ||this.floor[row][d].equals("1")||this.floor[row][d].equals("2")
                                         ||this.floor[row][d].equals("3")||this.floor[row][d].equals("4")) {
                                     break;
                                 }
                             }
                             for (int e=row+1; e<this.rows; e++) {
-                                if (this.floor[row][e].equals("L")||this.floor[row][e].equals("0")||this.floor[row][e].equals("1")
+                                if (this.floor[row][e].equals("L")||this.floor[row][e].equals("0")
+                                        ||this.floor[row][e].equals("1")||this.floor[row][e].equals("2")
                                         ||this.floor[row][e].equals("3")||this.floor[row][e].equals("4")) {
                                     break;
                                 }
@@ -243,7 +254,8 @@ public class LasersModel {
                             this.floor[r][col]=".";
                         }
 
-                    } else if (this.floor[r][col].equals("X")||this.floor[r][col].equals("0")||this.floor[r][col].equals("1")
+                    } else if (this.floor[r][col].equals("X")||this.floor[r][col].equals("0")
+                            ||this.floor[r][col].equals("1")||this.floor[r][col].equals("2")
                             ||this.floor[r][col].equals("3")||this.floor[r][col].equals("4")) {
                         break;
                     } else if (this.floor[r][col].equals("L")) {
@@ -269,8 +281,9 @@ public class LasersModel {
         while ( row < this.rows ) {
 
             while ( col < this.cols ) {
-                if(this.floor[row][col].equals("0")||this.floor[row][col].equals("1")
-                        ||this.floor[row][col].equals("3")||this.floor[row][col].equals("4")) {
+                if(this.floor[row][col].equals("X")||this.floor[row][col].equals("0")||this.floor[row][col].equals("1")
+                        ||this.floor[row][col].equals("2")||this.floor[row][col].equals("3")
+                        ||this.floor[row][col].equals("4")) {
                     int tile=(int) this.floor[row][col];
                     int lasers=0;
                     if (col+1<this.cols && this.floor[row][col+1].equals("L")) {
@@ -303,7 +316,7 @@ public class LasersModel {
                             notifyObservers(new ModelData(row, col,"Error verifying at: ("+row+", "+col+")", Status.ERROR));
 //                            this.display();
                             break outerloop;
-                        } else if (this.floor[row][c].equals("0")||this.floor[row][c].equals("1")
+                        } else if (this.floor[row][c].equals("0")||this.floor[row][c].equals("1")||this.floor[row][c].equals("2")
                                 ||this.floor[row][c].equals("3")||this.floor[row][c].equals("4")||this.floor[row][c].equals("X")) {
                             break;
                         }
@@ -314,7 +327,7 @@ public class LasersModel {
                             notifyObservers(new ModelData(row, col,"Error verifying at: ("+row+", "+col+")", Status.ERROR));
 //                            this.display();
                             break outerloop;
-                        } else if (this.floor[r][col].equals("0")||this.floor[r][col].equals("1")
+                        } else if (this.floor[r][col].equals("0")||this.floor[r][col].equals("1")||this.floor[r][col].equals("2")
                                 ||this.floor[r][col].equals("3")||this.floor[r][col].equals("4")||this.floor[r][col].equals("X")) {
                             break;
                         }
@@ -326,7 +339,7 @@ public class LasersModel {
                                 notifyObservers(new ModelData(row, col,"Error verifying at: ("+row+", "+col+")", Status.ERROR));
 //                                this.display();
                                 break outerloop;
-                            } else if (this.floor[row][c].equals("0")||this.floor[row][c].equals("1")
+                            } else if (this.floor[row][c].equals("0")||this.floor[row][c].equals("1")||this.floor[row][c].equals("2")
                                     ||this.floor[row][c].equals("3")||this.floor[row][c].equals("4")||this.floor[row][c].equals("X")) {
                                 break;
                             }
@@ -339,7 +352,7 @@ public class LasersModel {
                                 notifyObservers(new ModelData(row, col,"Error verifying at: ("+row+", "+col+")", Status.ERROR));
 //                                this.display();
                                 break outerloop;
-                            } else if (this.floor[r][col].equals("0")||this.floor[r][col].equals("1")
+                            } else if (this.floor[r][col].equals("0")||this.floor[r][col].equals("1")||this.floor[r][col].equals("2")
                                     ||this.floor[r][col].equals("3")||this.floor[r][col].equals("4")||this.floor[r][col].equals("X")) {
                                 break;
                             }
