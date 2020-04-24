@@ -14,11 +14,11 @@ public class ModelData {
 
     private final Status status;
 
-    public ModelData(int row, int col, String item) {
+    public ModelData(int row, int col, String item, Status status) {
         this.row=row;
         this.col=col;
         this.item=item;
-        this.status=Status.OK;
+        this.status=status;
     }
 
     /**

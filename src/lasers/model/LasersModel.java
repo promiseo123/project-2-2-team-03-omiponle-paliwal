@@ -81,7 +81,7 @@ public class LasersModel {
     public void add(int row, int col) {
         if(row<0||row>this.rows||col<0||col>this.cols||this.floor[row][col].equals("L")||this.floor[row][col].equals("X")||
                 this.floor[row][col] instanceof Integer) {
-            notifyObservers(new ModelData(row, col,"Error adding laser at: ("+row+","+col+")"));
+            notifyObservers(new ModelData(row, col,"Error adding laser at: ("+row+","+col+")", Status.ERROR));
         } else {
             this.floor[row][col]="L";
             for (int c=col+1; c<this.cols; c++) {
@@ -116,7 +116,7 @@ public class LasersModel {
                     }
                 }
             }
-            notifyObservers(new ModelData(row, col,"Laser added at: ("+row+","+col+")"));
+            notifyObservers(new ModelData(row, col,"Laser added at: ("+row+","+col+")", Status.OK));
         }
 
     }
@@ -136,7 +136,7 @@ public class LasersModel {
      */
     public void remove(int row, int col) {
         if (row<0||row>this.rows||col<0||col>this.cols||!this.floor[row][col].equals("L")) {
-            notifyObservers(new ModelData(row, col,"Error removing laser at: ("+row+", "+col+")"));
+            notifyObservers(new ModelData(row, col,"Error removing laser at: ("+row+", "+col+")", Status.ERROR));
         } else {
             this.floor[row][col]=".";
             for (int c=col+1; c<this.cols; c++) {
@@ -241,7 +241,7 @@ public class LasersModel {
                     }
                 }
             }
-            notifyObservers(new ModelData(row, col,"Laser removed at: ("+row+","+col+")"));
+            notifyObservers(new ModelData(row, col,"Laser removed at: ("+row+","+col+")", Status.OK));
         }
     }
 
@@ -252,9 +252,10 @@ public class LasersModel {
     public void verify() {
         int errors=0;
         int row = 0;
+        int col = 0;
         outerloop:
         while ( row < this.rows ) {
-            int col = 0;
+
             while ( col < this.cols ) {
                 if(this.floor[row][col] instanceof Integer) {
                     int tile=(int) this.floor[row][col];
@@ -273,20 +274,20 @@ public class LasersModel {
                     }
                     if (lasers!=tile) {
                         errors++;
-                        notifyObservers(new ModelData(row, col,"Error verifying at: ("+row+", "+col+")"));
+                        notifyObservers(new ModelData(row, col,"Error verifying at: ("+row+", "+col+")", Status.ERROR));
 //                        this.display();
                         break outerloop;
                     }
                 }
                 else if (this.floor[row][col].equals(".")) {
-                    notifyObservers(new ModelData(row, col,"Error verifying at: ("+row+", "+col+")"));
+                    notifyObservers(new ModelData(row, col,"Error verifying at: ("+row+", "+col+")", Status.ERROR));
 //                    this.display();
                     break outerloop;
                 } else if (this.floor[row][col].equals("L")) {
                     for (int c=col+1; c<this.cols; c++) {
                         if(this.floor[row][c].equals("L")) {
                             errors++;
-                            notifyObservers(new ModelData(row, col,"Error verifying at: ("+row+", "+col+")"));
+                            notifyObservers(new ModelData(row, col,"Error verifying at: ("+row+", "+col+")", Status.ERROR));
 //                            this.display();
                             break outerloop;
                         } else if (this.floor[row][c] instanceof Integer||this.floor[row][c].equals("X")) {
@@ -296,7 +297,7 @@ public class LasersModel {
                     for (int r=row+1; r<this.rows; r++) {
                         if(this.floor[r][col].equals("L")) {
                             errors++;
-                            notifyObservers(new ModelData(row, col,"Error verifying at: ("+row+", "+col+")"));
+                            notifyObservers(new ModelData(row, col,"Error verifying at: ("+row+", "+col+")", Status.ERROR));
 //                            this.display();
                             break outerloop;
                         } else if (this.floor[r][col] instanceof Integer||this.floor[r][col].equals("X")) {
@@ -307,7 +308,7 @@ public class LasersModel {
                         for (int c=col-1; c>=0; c--) {
                             if(this.floor[row][c].equals("L")) {
                                 errors++;
-                                notifyObservers(new ModelData(row, col,"Error verifying at: ("+row+", "+col+")"));
+                                notifyObservers(new ModelData(row, col,"Error verifying at: ("+row+", "+col+")", Status.ERROR));
 //                                this.display();
                                 break outerloop;
                             } else if (this.floor[row][c] instanceof Integer||this.floor[row][c].equals("X")) {
@@ -319,7 +320,7 @@ public class LasersModel {
                         for (int r=row-1; r>=0; r--) {
                             if(this.floor[r][col].equals("L")) {
                                 errors++;
-                                notifyObservers(new ModelData(row, col,"Error verifying at: ("+row+", "+col+")"));
+                                notifyObservers(new ModelData(row, col,"Error verifying at: ("+row+", "+col+")", Status.ERROR));
 //                                this.display();
                                 break outerloop;
                             } else if (this.floor[r][col] instanceof Integer||this.floor[r][col].equals("X")) {
@@ -331,8 +332,7 @@ public class LasersModel {
             } row++;
         }
         if (errors==0) {
-            notifyObservers(new ModelData(row, col,this+" is fully verified!"));
+            notifyObservers(new ModelData(row, col,this+" is fully verified!", Status.OK));
         }
-        this.display();
     }
 }
