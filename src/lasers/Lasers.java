@@ -3,6 +3,7 @@ package lasers;
 import javafx.application.Application;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import lasers.gui.LasersGUI;
 import lasers.ptui.ControllerPTUI;
@@ -82,6 +83,8 @@ public class Lasers {
         } catch (FileNotFoundException fnfe) {
             System.out.println(fnfe.getMessage());
             System.exit(-1);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

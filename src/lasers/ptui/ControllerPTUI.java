@@ -78,7 +78,7 @@ public class ControllerPTUI  {
         } else if (cmd.toLowerCase().charAt(0) == 'd') {
             model.display();
         } else if (cmd.toLowerCase().charAt(0) == 'h') {
-            LasersModel.help();
+            model.help();
         } else if (cmd.toLowerCase().charAt(0) == 'v') {
             model.verify();
         } else if (cmd.toLowerCase().charAt(0) == 'r') {

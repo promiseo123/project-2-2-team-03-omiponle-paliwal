@@ -365,4 +365,40 @@ public class LasersModel {
             notifyObservers(new ModelData(row, col,this+" is fully verified!", Status.OK));
         }
     }
+
+    /**
+     * Displays the safe to standard output.
+     */
+    public void display() {
+        System.out.print("  ");
+        for (int col = 0; col < this.cols; col++) {
+            if (String.valueOf(col).length() == 1) {
+                System.out.print(col + " ");
+            } else {
+                System.out.print(String.valueOf(col).charAt(String.valueOf(col).length() - 1) + " ");
+            }
+        }
+        System.out.println();
+        for (int row = 0; row < this.rows; row++) {
+            System.out.print(row + "|");
+
+            for (int col = 0; col < this.cols; col++) {
+                System.out.print(this.floor[row][col] + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    /**
+     * Method to display the help message to standard output, with no status message.
+     */
+    public void help(){
+        System.out.println(
+                "a|add r c: Add laser to (r,c)\n" +
+                        "d|display: Display safe\n" +
+                        "h|help: Print this help message\n" +
+                        "q|quit: Exit program\n" +
+                        "r|remove r c: Remove laser from (r,c)\n" +
+                        "v|verify: Verify safe correctness");
+    }
 }
