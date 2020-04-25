@@ -1,13 +1,18 @@
 package lasers.gui;
 
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 
 import lasers.model.*;
@@ -23,6 +28,12 @@ public class LasersGUI extends Application implements Observer<LasersModel, Mode
     /** The UI's connection to the lasers.lasers.model */
     private LasersModel model;
 
+    private Label message;
+    private Button check;
+    private Button hint;
+    private Button solve;
+    private Button restart;
+    private Button load;
     /** this can be removed - it is used to demonstrates the button toggle */
     private static boolean status = true;
 
@@ -94,7 +105,20 @@ public class LasersGUI extends Application implements Observer<LasersModel, Mode
      * @param stage the stage to add UI components into
      */
     private void init(Stage stage) {
-        // TODO
+        BorderPane window=new BorderPane();
+        this.message.setAlignment(Pos.CENTER);
+        window.setTop(this.message);
+        HBox options=new HBox();
+        this.check=new Button("Check");
+        this.check.setOnAction(event -> model.verify());
+        load.setOnAction(event -> {FileChooser chooser=new FileChooser();
+            File selectedFile = chooser.showOpenDialog(stage);
+            if (selectedFile != null) {
+                stage.display(selectedFile);
+            };});
+        options.getChildren().addAll(check, hint, solve, load);
+        GridPane safe=new GridPane();
+
         buttonDemo(stage);  // this can be removed/altered
     }
 
