@@ -39,7 +39,7 @@ public class ControllerPTUI  {
                 while (fileIn.hasNextLine()) {
                     String line = fileIn.nextLine();
                     System.out.print("> " + line);
-                    String[] cmd = line.split("");
+                    String[] cmd = line.split(" ");
                     cmdPtui(cmd);
                 }
                 fileIn.close();
@@ -62,14 +62,12 @@ public class ControllerPTUI  {
 
     /**
      * Method to handle different commands
-     * @param cmdArray command
+     * @param adder command
      */
-    private void cmdPtui(String[] cmdArray) {
-
-        String cmd = Character.toString(cmdArray[0].charAt(0));
+    private void cmdPtui(String[] adder) {
+        String cmd = Character.toString(adder[0].charAt(0));
         if (cmd.toLowerCase().charAt(0) == 'a') {
-            String[] adder = cmd.split(" ");
-
+            //String[] adder = cmd.split(" ");
             if (adder.length == 3) {
                 model.add(Integer.parseInt(adder[1]), Integer.parseInt(adder[2]));
             } else {
