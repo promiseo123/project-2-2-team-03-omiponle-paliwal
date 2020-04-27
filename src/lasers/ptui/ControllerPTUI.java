@@ -38,7 +38,7 @@ public class ControllerPTUI  {
                 Scanner fileIn = new Scanner(new File(inputFile));
                 while (fileIn.hasNextLine()) {
                     String line = fileIn.nextLine();
-                    System.out.print("> " + line);
+                    System.out.println("> " + line);
                     String[] cmd = line.split(" ");
                     cmdPtui(cmd);
                 }
@@ -67,7 +67,6 @@ public class ControllerPTUI  {
     private void cmdPtui(String[] adder) {
         String cmd = Character.toString(adder[0].charAt(0));
         if (cmd.toLowerCase().charAt(0) == 'a') {
-            //String[] adder = cmd.split(" ");
             if (adder.length == 3) {
                 model.add(Integer.parseInt(adder[1]), Integer.parseInt(adder[2]));
             } else {
