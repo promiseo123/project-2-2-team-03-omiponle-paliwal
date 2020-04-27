@@ -26,9 +26,10 @@ public class LasersModel {
 
     private BufferedReader reader;
 
-    public String status;
+    private String name;
 
     public LasersModel(String filename) throws IOException {
+        this.name=filename;
         this.observers = new LinkedList<>();
         File safeFile = new File(filename);
         this.reader = new BufferedReader(new FileReader((safeFile)));
@@ -407,7 +408,7 @@ public class LasersModel {
             } row++;
         }
         if (errors==0) {
-            notifyObservers(new ModelData(row, col,this+" is fully verified!", Status.OK));
+            notifyObservers(new ModelData(row, col,this.name+" is fully verified!", Status.OK));
         }
     }
 
@@ -445,5 +446,8 @@ public class LasersModel {
                         "q|quit: Exit program\n" +
                         "r|remove r c: Remove laser from (r,c)\n" +
                         "v|verify: Verify safe correctness");
+    }
+    public String getName() {
+        return this.name;
     }
 }

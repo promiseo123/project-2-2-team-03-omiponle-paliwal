@@ -1,6 +1,7 @@
 package lasers.gui;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -113,7 +114,7 @@ public class LasersGUI extends Application implements Observer<LasersModel, Mode
     private void init(Stage stage) {
         BorderPane window=new BorderPane();
         this.message=new Label("");
-        this.message.setAlignment(Pos.CENTER);
+        this.message.setAlignment(Pos.TOP_CENTER);
         window.setTop(this.message);
         HBox options=new HBox();
         this.check=new Button("Check");
@@ -148,7 +149,8 @@ public class LasersGUI extends Application implements Observer<LasersModel, Mode
             for (int col=0; col<this.model.getCols(); col++) {
                 if (this.model.getFloor()[row][col].equals("X")) {
                     Button pillar=new Button();
-                    pillar.setGraphic(new ImageView("resources/pillarX.png"));
+                    pillar.setGraphic(new ImageView(
+                            new Image(getClass().getResourceAsStream("resources/pillarX.png"))));
                     buttons[row][col]=pillar;
                     safe.add(pillar, col, row);
                 } else if(this.model.getFloor()[row][col].equals("0")||this.model.getFloor()[row][col].equals("1")
@@ -156,12 +158,17 @@ public class LasersGUI extends Application implements Observer<LasersModel, Mode
                                                                 ||this.model.getFloor()[row][col].equals("4")) {
                     String thing= this.model.getFloor()[row][col];
                     Button pillar=new Button();
-                    pillar.setGraphic(new ImageView("resources/pillar"+thing+".png"));
+                    pillar.setGraphic(new ImageView(
+                            new Image(getClass().getResourceAsStream("resources/pillar"+thing+".png"))));
                     buttons[row][col]=pillar;
                     safe.add(pillar, col,row);
                 } else {
                     Button tile=new Button();
-                    tile.setGraphic(new ImageView("resources/white.png"));
+                    tile.setGraphic(new ImageView(
+                            new Image(getClass().getResourceAsStream("resources/white.png"))));
+                    int finalRow = row;
+                    int finalCol = col;
+                    tile.setOnAction(event -> model.add(finalRow, finalCol));
                     buttons[row][col]=tile;
                     safe.add(tile, col, row);
                 }
@@ -175,16 +182,22 @@ public class LasersGUI extends Application implements Observer<LasersModel, Mode
 
     public void updateButton(ModelData data){
         Button button=buttons[data.getRow()][data.getCol()];
-        if (data.getItem().equals("Error verifying at: ("+data.getRow()+","+data.getCol()+")")) {
+        if (data.getStatus()==Status.ERROR) {
             setButtonBackground(button, "red.png");
         } else if (data.getItem().equals("Laser added at: ("+data.getRow()+","+data.getCol()+")")) {
-            button.setGraphic(new ImageView("resources/laser.png"));
+            button.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("resources/laser.png"))));
             setButtonBackground(button, "yellow.png");
+            button.setOnAction(event -> {model.remove(data.getRow(), data.getCol());
+                updateButton(new ModelData(data.getRow(), data.getCol(),
+                        "Laser removed at: ("+data.getRow()+","+data.getCol()+")", Status.OK));});
             for (int c=data.getCol()+1; c<model.getCols(); c++) {
                 if(model.getFloor()[data.getRow()][c].equals("*")) {
                     Button beam=buttons[data.getRow()][c];
-                    beam.setGraphic(new ImageView("resources/beam.png"));
+                    beam.setGraphic(new ImageView(
+                            new Image(getClass().getResourceAsStream("resources/beam.png"))));
                     setButtonBackground(beam, "yellow.png");
+                    int finalC = c;
+                    beam.setOnAction(event -> model.add(data.getRow(), finalC));
                 } else {
                     break;
                 }
@@ -192,8 +205,11 @@ public class LasersGUI extends Application implements Observer<LasersModel, Mode
             for (int r=data.getRow()+1; r<model.getCols(); r++) {
                 if(model.getFloor()[r][data.getCol()].equals("*")) {
                     Button beam=buttons[r][data.getCol()];
-                    beam.setGraphic(new ImageView("resources/beam.png"));
+                    beam.setGraphic(new ImageView(
+                            new Image(getClass().getResourceAsStream("resources/beam.png"))));
                     setButtonBackground(beam, "yellow.png");
+                    int finalR = r;
+                    beam.setOnAction(event -> model.add(finalR, data.getCol()));
                 } else {
                     break;
                 }
@@ -202,8 +218,11 @@ public class LasersGUI extends Application implements Observer<LasersModel, Mode
                 for (int c=data.getCol()-1; c>=0; c--) {
                     if(model.getFloor()[data.getRow()][c].equals("*")) {
                         Button beam=buttons[data.getRow()][c];
-                        beam.setGraphic(new ImageView("resources/beam.png"));
+                        beam.setGraphic(new ImageView(
+                                new Image(getClass().getResourceAsStream("resources/beam.png"))));
                         setButtonBackground(beam, "yellow.png");
+                        int finalC = c;
+                        beam.setOnAction(event -> model.add(data.getRow(), finalC));
                     } else {
                         break;
                     }
@@ -213,33 +232,48 @@ public class LasersGUI extends Application implements Observer<LasersModel, Mode
                 for (int r=data.getRow()-1; r>=0; r--) {
                     if(model.getFloor()[r][data.getCol()].equals("*")) {
                         Button beam=buttons[r][data.getCol()];
-                        beam.setGraphic(new ImageView("resources/beam.png"));
+                        beam.setGraphic(new ImageView(
+                                new Image(getClass().getResourceAsStream("resources/beam.png"))));
                         setButtonBackground(beam, "yellow.png");
+                        int finalR = r;
+                        beam.setOnAction(event -> model.add(finalR, data.getCol()));
                     } else {
                         break;
                     }
                 }
             }
         } else if (data.getItem().equals("Laser removed at: ("+data.getRow()+","+data.getCol()+")")) {
-            button.setGraphic(new ImageView("resources/white.png"));
+            if (model.getFloor()[data.getRow()][data.getCol()].equals(".")) {
+                button.setGraphic(new ImageView(
+                        new Image(getClass().getResourceAsStream("resources/white.png"))));
+            }
             for (int c = data.getCol() + 1; c < model.getCols(); c++) {
-                if (".".equals(model.getFloor()[data.getRow()][c])) {
-                    buttons[data.getRow()][c].setGraphic(new ImageView("resources/white.png"));
+                if (model.getFloor()[data.getRow()][c].equals(".")) {
+                    buttons[data.getRow()][c].setGraphic(new ImageView(
+                            new Image(getClass().getResourceAsStream("resources/white.png"))));
+                    int finalC = c;
+                    buttons[data.getRow()][c].setOnAction(event -> model.add(data.getRow(), finalC));
                 } else if (!model.getFloor()[data.getRow()][c].equals("*")) {
                     break;
                 }
             }
             for (int r = data.getRow() + 1; r < model.getRows(); r++) {
-                if (".".equals(model.getFloor()[r][data.getCol()])) {
-                    buttons[r][data.getCol()].setGraphic(new ImageView("resources/white.png"));
+                if (model.getFloor()[r][data.getCol()].equals(".")) {
+                    buttons[r][data.getCol()].setGraphic(new ImageView(
+                            new Image(getClass().getResourceAsStream("resources/white.png"))));
+                    int finalR = r;
+                    buttons[r][data.getCol()].setOnAction(event -> model.add(finalR, data.getCol()));
                 } else if (!model.getFloor()[r][data.getCol()].equals("*")) {
                     break;
                 }
             }
             if (data.getCol()!=0) {
                 for (int c = data.getCol() - 1; c >= 0; c--) {
-                    if (".".equals(model.getFloor()[data.getRow()][c])) {
-                        buttons[data.getRow()][c].setGraphic(new ImageView("resources/white.png"));
+                    if (model.getFloor()[data.getRow()][c].equals(".")) {
+                        buttons[data.getRow()][c].setGraphic(new ImageView(
+                                new Image(getClass().getResourceAsStream("resources/white.png"))));
+                        int finalC = c;
+                        buttons[data.getRow()][c].setOnAction(event -> model.add(data.getRow(), finalC));
                     } else if (!model.getFloor()[data.getRow()][c].equals("*")) {
                         break;
                     }
@@ -247,8 +281,11 @@ public class LasersGUI extends Application implements Observer<LasersModel, Mode
             }
             if (data.getRow()!=0) {
                 for (int r = data.getRow() - 1; r >= 0; r--) {
-                    if (".".equals(model.getFloor()[r][data.getCol()])) {
-                        buttons[r][data.getCol()].setGraphic(new ImageView("resources/white.png"));
+                    if (model.getFloor()[r][data.getCol()].equals(".")) {
+                        buttons[r][data.getCol()].setGraphic(new ImageView(
+                                new Image(getClass().getResourceAsStream("resources/white.png"))));
+                        int finalR = r;
+                        buttons[r][data.getCol()].setOnAction(event -> model.add(finalR, data.getCol()));
                     } else if (!model.getFloor()[r][data.getCol()].equals("*")) {
                         break;
                     }
@@ -258,18 +295,54 @@ public class LasersGUI extends Application implements Observer<LasersModel, Mode
         }this.message.setText(data.getItem());
     }
 
+    /**
+     * UpdateThread represents a Thread for updating a tile
+     * in the view.
+     */
+    public class UpdateThread implements Runnable {
+        private ModelData data;
+
+        /**
+         * Initializes the card field in the thread.
+         *
+         * @param data the card to be updated
+         */
+        public UpdateThread(ModelData data) {
+            this.data=data;
+        }
+
+        /**
+         * Sets the tile to a button and updates it according to what
+         * happens in the safe.
+         */
+        @Override
+        public void run() {
+            if(data!=null) {
+                if(started) {
+                    updateButton(data);
+                }
+            }
+            assert data != null;
+            message.setText(data.getItem());
+
+        }
+    }
+
     @Override
     public void start(Stage stage) throws Exception {
-        // TODO
+        init();
         init(stage);  // do all your UI initialization here
 
         stage.setTitle("Lasers GUI");
         stage.show();
+        this.message.setText(model.getName()+" loaded.");
         this.started=true;
     }
 
     @Override
     public void update(LasersModel model, ModelData data) {
-        // TODO
+        if(started) {
+            Platform.runLater(new UpdateThread(data));
+        }
     }
 }
