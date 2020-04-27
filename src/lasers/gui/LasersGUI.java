@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import lasers.model.*;
 
@@ -35,6 +36,10 @@ public class LasersGUI extends Application implements Observer<LasersModel, Mode
     private Button restart;
     private Button load;
     private boolean started;
+
+    /** 2-D array of the buttons on the board. */
+    private Button[][] buttons;
+
     /** this can be removed - it is used to demonstrates the button toggle */
     private static boolean status = true;
 
@@ -125,17 +130,26 @@ public class LasersGUI extends Application implements Observer<LasersModel, Mode
         });
         this.load=new Button("Load");
         this.load.setOnAction(event -> {FileChooser chooser=new FileChooser();
-            Stage fileStage=new Stage();
-            File selectedFile = chooser.showOpenDialog(fileStage);
-            ;});
+            chooser.setInitialDirectory(new File("tests"));
+            File selectedFile = chooser.showOpenDialog(stage);
+            if (selectedFile != null) {
+                try {
+                    model=new LasersModel(selectedFile.getAbsolutePath());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            });
         options.getChildren().addAll(check, hint, solve, restart, load);
         window.setBottom(options);
         GridPane safe=new GridPane();
+        buttons=new Button[model.getRows()][model.getCols()];
         for (int row=0; row<this.model.getRows(); row++) {
             for (int col=0; col<this.model.getCols(); col++) {
                 if (this.model.getFloor()[row][col].equals("X")) {
                     Button pillar=new Button();
                     pillar.setGraphic(new ImageView("resources/pillarX.png"));
+                    buttons[row][col]=pillar;
                     safe.add(pillar, col, row);
                 } else if(this.model.getFloor()[row][col].equals("0")||this.model.getFloor()[row][col].equals("1")
                 ||this.model.getFloor()[row][col].equals("2")||this.model.getFloor()[row][col].equals("3")
@@ -143,10 +157,12 @@ public class LasersGUI extends Application implements Observer<LasersModel, Mode
                     String thing= this.model.getFloor()[row][col];
                     Button pillar=new Button();
                     pillar.setGraphic(new ImageView("resources/pillar"+thing+".png"));
+                    buttons[row][col]=pillar;
                     safe.add(pillar, col,row);
                 } else {
                     Button tile=new Button();
                     tile.setGraphic(new ImageView("resources/white.png"));
+                    buttons[row][col]=tile;
                     safe.add(tile, col, row);
                 }
             }
@@ -155,6 +171,91 @@ public class LasersGUI extends Application implements Observer<LasersModel, Mode
         Scene scene=new Scene(window);
         stage.setScene(scene);
 //        buttonDemo(stage);  // this can be removed/altered
+    }
+
+    public void updateButton(ModelData data){
+        Button button=buttons[data.getRow()][data.getCol()];
+        if (data.getItem().equals("Error verifying at: ("+data.getRow()+","+data.getCol()+")")) {
+            setButtonBackground(button, "red.png");
+        } else if (data.getItem().equals("Laser added at: ("+data.getRow()+","+data.getCol()+")")) {
+            button.setGraphic(new ImageView("resources/laser.png"));
+            setButtonBackground(button, "yellow.png");
+            for (int c=data.getCol()+1; c<model.getCols(); c++) {
+                if(model.getFloor()[data.getRow()][c].equals("*")) {
+                    Button beam=buttons[data.getRow()][c];
+                    beam.setGraphic(new ImageView("resources/beam.png"));
+                    setButtonBackground(beam, "yellow.png");
+                } else {
+                    break;
+                }
+            }
+            for (int r=data.getRow()+1; r<model.getCols(); r++) {
+                if(model.getFloor()[r][data.getCol()].equals("*")) {
+                    Button beam=buttons[r][data.getCol()];
+                    beam.setGraphic(new ImageView("resources/beam.png"));
+                    setButtonBackground(beam, "yellow.png");
+                } else {
+                    break;
+                }
+            }
+            if (data.getCol()!=0) {
+                for (int c=data.getCol()-1; c>=0; c--) {
+                    if(model.getFloor()[data.getRow()][c].equals("*")) {
+                        Button beam=buttons[data.getRow()][c];
+                        beam.setGraphic(new ImageView("resources/beam.png"));
+                        setButtonBackground(beam, "yellow.png");
+                    } else {
+                        break;
+                    }
+                }
+            }
+            if (data.getRow()!=0) {
+                for (int r=data.getRow()-1; r>=0; r--) {
+                    if(model.getFloor()[r][data.getCol()].equals("*")) {
+                        Button beam=buttons[r][data.getCol()];
+                        beam.setGraphic(new ImageView("resources/beam.png"));
+                        setButtonBackground(beam, "yellow.png");
+                    } else {
+                        break;
+                    }
+                }
+            }
+        } else if (data.getItem().equals("Laser removed at: ("+data.getRow()+","+data.getCol()+")")) {
+            button.setGraphic(new ImageView("resources/white.png"));
+            for (int c = data.getCol() + 1; c < model.getCols(); c++) {
+                if (".".equals(model.getFloor()[data.getRow()][c])) {
+                    buttons[data.getRow()][c].setGraphic(new ImageView("resources/white.png"));
+                } else if (!model.getFloor()[data.getRow()][c].equals("*")) {
+                    break;
+                }
+            }
+            for (int r = data.getRow() + 1; r < model.getRows(); r++) {
+                if (".".equals(model.getFloor()[r][data.getCol()])) {
+                    buttons[r][data.getCol()].setGraphic(new ImageView("resources/white.png"));
+                } else if (!model.getFloor()[r][data.getCol()].equals("*")) {
+                    break;
+                }
+            }
+            if (data.getCol()!=0) {
+                for (int c = data.getCol() - 1; c >= 0; c--) {
+                    if (".".equals(model.getFloor()[data.getRow()][c])) {
+                        buttons[data.getRow()][c].setGraphic(new ImageView("resources/white.png"));
+                    } else if (!model.getFloor()[data.getRow()][c].equals("*")) {
+                        break;
+                    }
+                }
+            }
+            if (data.getRow()!=0) {
+                for (int r = data.getRow() - 1; r >= 0; r--) {
+                    if (".".equals(model.getFloor()[r][data.getCol()])) {
+                        buttons[r][data.getCol()].setGraphic(new ImageView("resources/white.png"));
+                    } else if (!model.getFloor()[r][data.getCol()].equals("*")) {
+                        break;
+                    }
+                }
+
+            }
+        }this.message.setText(data.getItem());
     }
 
     @Override

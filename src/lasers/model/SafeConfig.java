@@ -1,4 +1,6 @@
-package lasers.backtracking;
+package lasers.model;
+
+import lasers.backtracking.Configuration;
 
 import java.util.Collection;
 

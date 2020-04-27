@@ -1,5 +1,7 @@
 package lasers.backtracking;
 
+import lasers.model.SafeConfig;
+
 import java.io.FileNotFoundException;
 import java.util.Optional;
 

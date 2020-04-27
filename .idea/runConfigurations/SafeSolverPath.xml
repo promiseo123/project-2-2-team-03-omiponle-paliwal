@@ -5,7 +5,7 @@
     <option name="PROGRAM_PARAMETERS" value="tests/text4.txt true" />
     <extension name="coverage">
       <pattern>
-        <option name="PATTERN" value="lasers.backtracking.*" />
+        <option name="PATTERN" value="lasers.model.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>
