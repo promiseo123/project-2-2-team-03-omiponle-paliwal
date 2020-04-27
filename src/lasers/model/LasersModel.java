@@ -22,7 +22,7 @@ public class LasersModel {
     private int cols;
 
     /** A 2-D array that represents the tiles of the Safe floor. */
-    private Object[][] floor;
+    private String[][] floor;
 
     private BufferedReader reader;
 
@@ -36,7 +36,7 @@ public class LasersModel {
         String[] cord = text.split(" ");
         this.rows=Integer.parseInt(cord[0]);
         this.cols=Integer.parseInt(cord[1]);
-        this.floor=new Object[rows][cols];
+        this.floor=new String[rows][cols];
         SafeTheBuilder();
     }
 
@@ -78,9 +78,28 @@ public class LasersModel {
         notifyObservers(null);
     }
 
+    /**
+     * Get the number of rows.
+     *
+     * @return number of the rows
+     */
+    public int getRows() { return this.rows; }
+
+    /**
+     * Get the columns.
+     *
+     * @return the number of columns
+     */
+    public int getCols() { return this.cols; }
+
+    public String[][] getFloor() {
+        return this.floor;
+    }
+
     public void add(int row, int col) {
         if(row<0||row>this.rows||col<0||col>this.cols||this.floor[row][col].equals("L")||this.floor[row][col].equals("X")||
-                this.floor[row][col] instanceof Integer) {
+                this.floor[row][col].equals("0")||this.floor[row][col].equals("1")||this.floor[row][col].equals("2")
+                ||this.floor[row][col].equals("3")||this.floor[row][col].equals("4")) {
             notifyObservers(new ModelData(row, col,"Error adding laser at: ("+row+","+col+")", Status.ERROR));
         } else {
             this.floor[row][col]="L";
@@ -139,129 +158,156 @@ public class LasersModel {
             notifyObservers(new ModelData(row, col,"Error removing laser at: ("+row+", "+col+")", Status.ERROR));
         } else {
             this.floor[row][col]=".";
-            for (int c=col+1; c<this.cols; c++) {
-                if(this.floor[row][c].equals("*")) {
-                    if((row-1>=0)|| (row+1<this.rows)) {
-                        for (int d=row-1; d>=0; d--) {
-                            if (this.floor[d][c].equals("L")||this.floor[d][c].equals("0")||this.floor[d][c].equals("1")
-                                    ||this.floor[d][c].equals("2") ||this.floor[d][c].equals("3")
-                                    ||this.floor[d][c].equals("4")) {
-                                break;
-                            }
-                        }
-                        for (int e=row+1; e<this.rows; e++) {
-                            if (this.floor[e][c].equals("L")||this.floor[e][c].equals("0")||this.floor[e][c].equals("1")
-                                    ||this.floor[e][c].equals("2")||this.floor[e][c].equals("3")
-                                    ||this.floor[e][c].equals("4")) {
-                                break;
-                            }
-                        }
-                    } else {
-                        this.floor[row][c]=".";
-                    }
-                } else if (this.floor[row][c].equals("X")||this.floor[row][c].equals("0")||this.floor[row][c].equals("1")
-                        ||this.floor[row][c].equals("2")||this.floor[row][c].equals("3")
-                        ||this.floor[row][c].equals("4")) {
-                    break;
-                }
-                else if (this.floor[row][c].equals("L")) {
-                    for(int b=c-1; b>=col; b--) {
-                        this.floor[row][b]="*";
-                    }
-                }
-            }
-            for (int r=row+1; r<this.rows; r++) {
-                if(this.floor[r][col].equals("*")) {
-                    if((col-1>=0)|| (col+1<this.cols)) {
-                        for (int d=col-1; d>=0; d--) {
-                            if (this.floor[row][d].equals("L")||this.floor[row][d].equals("0")
-                                    ||this.floor[row][d].equals("1")||this.floor[row][d].equals("2")
-                                    ||this.floor[row][d].equals("3")||this.floor[row][d].equals("4")) {
-                                break;
-                            }
-                        }
-                        for (int e=row+1; e<this.rows; e++) {
-                            if (this.floor[row][e].equals("L")||this.floor[row][e].equals("0")
-                                    ||this.floor[row][e].equals("1")||this.floor[row][e].equals("2")
-                                    ||this.floor[row][e].equals("3")||this.floor[row][e].equals("4")) {
-                                break;
-                            }
-                        }
-                    } else {
-                        this.floor[r][col]=".";
-                    }
-                } else if (this.floor[r][col].equals("X")||this.floor[r][col].equals("0")
-                        ||this.floor[r][col].equals("1")||this.floor[r][col].equals("2")
-                        ||this.floor[r][col].equals("3")||this.floor[r][col].equals("4")) {
-                    break;
-                } else if (this.floor[r][col].equals("L")) {
-                    for(int b=r-1; b>=row; b--) {
-                        this.floor[b][col]="*";
-                    }
-                }
-            }
-            if (col!=0) {
-                for (int c=col-1; c>=0; c--) {
-                    if(this.floor[row][c].equals("*")) {
-                        if((row-1>=0)|| (row+1<this.rows)) {
-                            for (int d=row-1; d>=0; d--) {
-                                if (this.floor[d][c].equals("L")||this.floor[d][c].equals("0")
-                                        ||this.floor[d][c].equals("1")||this.floor[d][c].equals("2")
-                                        ||this.floor[d][c].equals("3")||this.floor[d][c].equals("4")) {
+            label:
+            for (int c = col+1; c<this.cols; c++) {
+                switch (this.floor[row][c]) {
+                    case "*":
+                        if ((row - 1 >= 0) || (row + 1 < this.rows)) {
+                            for (int d = row - 1; d >= 0; d--) {
+                                if (this.floor[d][c].equals("L") || this.floor[d][c].equals("0") || this.floor[d][c].equals("1")
+                                        || this.floor[d][c].equals("2") || this.floor[d][c].equals("3")
+                                        || this.floor[d][c].equals("4")) {
                                     break;
                                 }
                             }
-                            for (int e=row+1; e<this.rows; e++) {
-                                if (this.floor[e][c].equals("L")||this.floor[e][c].equals("0")
-                                        ||this.floor[e][c].equals("1")||this.floor[e][c].equals("2")
-                                        ||this.floor[e][c].equals("3")||this.floor[e][c].equals("4")) {
+                            for (int e = row + 1; e < this.rows; e++) {
+                                if (this.floor[e][c].equals("L") || this.floor[e][c].equals("0") || this.floor[e][c].equals("1")
+                                        || this.floor[e][c].equals("2") || this.floor[e][c].equals("3")
+                                        || this.floor[e][c].equals("4")) {
                                     break;
                                 }
                             }
                         } else {
-                            this.floor[row][c]=".";
+                            this.floor[row][c] = ".";
                         }
-                    } else if (this.floor[row][c].equals("X")||this.floor[row][c].equals("0")
-                            ||this.floor[row][c].equals("1")||this.floor[row][c].equals("2")
-                            ||this.floor[row][c].equals("3")||this.floor[row][c].equals("4")) {
                         break;
-                    } else if (this.floor[row][c].equals("L")) {
-                        for(int b=c+1; b<=col; b++) {
-                            this.floor[row][b]="*";
+                    case "X":
+                    case "0":
+                    case "1":
+                    case "2":
+                    case "3":
+                    case "4":
+                        break label;
+                    case "L":
+                        for (int b = c - 1; b >= col; b--) {
+                            this.floor[row][b] = "*";
                         }
+                        break;
+                }
+            }
+            label1:
+            for (int r = row+1; r<this.rows; r++) {
+                switch (this.floor[r][col]) {
+                    case "*":
+                        if ((col - 1 >= 0) || (col + 1 < this.cols)) {
+                            for (int d = col - 1; d >= 0; d--) {
+                                if (this.floor[row][d].equals("L") || this.floor[row][d].equals("0")
+                                        || this.floor[row][d].equals("1") || this.floor[row][d].equals("2")
+                                        || this.floor[row][d].equals("3") || this.floor[row][d].equals("4")) {
+                                    break;
+                                }
+                            }
+                            for (int e = row + 1; e < this.rows; e++) {
+                                if (this.floor[row][e].equals("L") || this.floor[row][e].equals("0")
+                                        || this.floor[row][e].equals("1") || this.floor[row][e].equals("2")
+                                        || this.floor[row][e].equals("3") || this.floor[row][e].equals("4")) {
+                                    break;
+                                }
+                            }
+                        } else {
+                            this.floor[r][col] = ".";
+                        }
+                        break;
+                    case "X":
+                    case "0":
+                    case "1":
+                    case "2":
+                    case "3":
+                    case "4":
+                        break label1;
+                    case "L":
+                        for (int b = r - 1; b >= row; b--) {
+                            this.floor[b][col] = "*";
+                        }
+                        break;
+                }
+            }
+            if (col!=0) {
+                label2:
+                for (int c = col-1; c>=0; c--) {
+                    switch (this.floor[row][c]) {
+                        case "*":
+                            if ((row - 1 >= 0) || (row + 1 < this.rows)) {
+                                for (int d = row - 1; d >= 0; d--) {
+                                    if (this.floor[d][c].equals("L") || this.floor[d][c].equals("0")
+                                            || this.floor[d][c].equals("1") || this.floor[d][c].equals("2")
+                                            || this.floor[d][c].equals("3") || this.floor[d][c].equals("4")) {
+                                        break;
+                                    }
+                                }
+                                for (int e = row + 1; e < this.rows; e++) {
+                                    if (this.floor[e][c].equals("L") || this.floor[e][c].equals("0")
+                                            || this.floor[e][c].equals("1") || this.floor[e][c].equals("2")
+                                            || this.floor[e][c].equals("3") || this.floor[e][c].equals("4")) {
+                                        break;
+                                    }
+                                }
+                            } else {
+                                this.floor[row][c] = ".";
+                            }
+                            break;
+                        case "X":
+                        case "0":
+                        case "1":
+                        case "2":
+                        case "3":
+                        case "4":
+                            break label2;
+                        case "L":
+                            for (int b = c + 1; b <= col; b++) {
+                                this.floor[row][b] = "*";
+                            }
+                            break;
                     }
                 }
             }
             if (row!=0) {
-                for (int r=row-1; r>=0; r--) {
-                    if(this.floor[r][col].equals("*")) {
-                        if((col-1>=0)|| (col+1<this.cols)) {
-                            for (int d=col-1; d>=0; d--) {
-                                if (this.floor[row][d].equals("L")||this.floor[row][d].equals("0")
-                                        ||this.floor[row][d].equals("1")||this.floor[row][d].equals("2")
-                                        ||this.floor[row][d].equals("3")||this.floor[row][d].equals("4")) {
-                                    break;
+                label3:
+                for (int r = row-1; r>=0; r--) {
+                    switch (this.floor[r][col]) {
+                        case "*":
+                            if ((col - 1 >= 0) || (col + 1 < this.cols)) {
+                                for (int d = col - 1; d >= 0; d--) {
+                                    if (this.floor[row][d].equals("L") || this.floor[row][d].equals("0")
+                                            || this.floor[row][d].equals("1") || this.floor[row][d].equals("2")
+                                            || this.floor[row][d].equals("3") || this.floor[row][d].equals("4")) {
+                                        break;
+                                    }
                                 }
-                            }
-                            for (int e=row+1; e<this.rows; e++) {
-                                if (this.floor[row][e].equals("L")||this.floor[row][e].equals("0")
-                                        ||this.floor[row][e].equals("1")||this.floor[row][e].equals("2")
-                                        ||this.floor[row][e].equals("3")||this.floor[row][e].equals("4")) {
-                                    break;
+                                for (int e = row + 1; e < this.rows; e++) {
+                                    if (this.floor[row][e].equals("L") || this.floor[row][e].equals("0")
+                                            || this.floor[row][e].equals("1") || this.floor[row][e].equals("2")
+                                            || this.floor[row][e].equals("3") || this.floor[row][e].equals("4")) {
+                                        break;
+                                    }
                                 }
+                            } else {
+                                this.floor[r][col] = ".";
                             }
-                        } else {
-                            this.floor[r][col]=".";
-                        }
 
-                    } else if (this.floor[r][col].equals("X")||this.floor[r][col].equals("0")
-                            ||this.floor[r][col].equals("1")||this.floor[r][col].equals("2")
-                            ||this.floor[r][col].equals("3")||this.floor[r][col].equals("4")) {
-                        break;
-                    } else if (this.floor[r][col].equals("L")) {
-                        for(int b=r+1; b<=row; b++) {
-                            this.floor[b][col]="*";
-                        }
+                            break;
+                        case "X":
+                        case "0":
+                        case "1":
+                        case "2":
+                        case "3":
+                        case "4":
+                            break label3;
+                        case "L":
+                            for (int b = r + 1; b <= row; b++) {
+                                this.floor[b][col] = "*";
+                            }
+                            break;
                     }
                 }
             }
@@ -279,12 +325,12 @@ public class LasersModel {
         int col = 0;
         outerloop:
         while ( row < this.rows ) {
-
+            col=0;
             while ( col < this.cols ) {
                 if(this.floor[row][col].equals("X")||this.floor[row][col].equals("0")||this.floor[row][col].equals("1")
                         ||this.floor[row][col].equals("2")||this.floor[row][col].equals("3")
                         ||this.floor[row][col].equals("4")) {
-                    int tile=(int) this.floor[row][col];
+                    int tile=Integer.parseInt(this.floor[row][col]);
                     int lasers=0;
                     if (col+1<this.cols && this.floor[row][col+1].equals("L")) {
                         lasers++;
@@ -301,7 +347,6 @@ public class LasersModel {
                     if (lasers!=tile) {
                         errors++;
                         notifyObservers(new ModelData(row, col,"Error verifying at: ("+row+", "+col+")", Status.ERROR));
-//                        this.display();
                         break outerloop;
                     }
                 }

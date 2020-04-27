@@ -34,6 +34,7 @@ public class LasersGUI extends Application implements Observer<LasersModel, Mode
     private Button solve;
     private Button restart;
     private Button load;
+    private boolean started;
     /** this can be removed - it is used to demonstrates the button toggle */
     private static boolean status = true;
 
@@ -106,20 +107,54 @@ public class LasersGUI extends Application implements Observer<LasersModel, Mode
      */
     private void init(Stage stage) {
         BorderPane window=new BorderPane();
+        this.message=new Label("");
         this.message.setAlignment(Pos.CENTER);
         window.setTop(this.message);
         HBox options=new HBox();
         this.check=new Button("Check");
-        this.check.setOnAction(event -> model.verify());
-        load.setOnAction(event -> {FileChooser chooser=new FileChooser();
-            File selectedFile = chooser.showOpenDialog(stage);
-            if (selectedFile != null) {
-                stage.display(selectedFile);
-            };});
-        options.getChildren().addAll(check, hint, solve, load);
+        this.check.setOnAction(event -> this.model.verify());
+        this.hint=new Button("Hint");
+        this.solve=new Button("Solve");
+        this.restart=new Button("Restart");
+        this.restart.setOnAction(event -> {
+            try {
+                start(stage);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        this.load=new Button("Load");
+        this.load.setOnAction(event -> {FileChooser chooser=new FileChooser();
+            Stage fileStage=new Stage();
+            File selectedFile = chooser.showOpenDialog(fileStage);
+            ;});
+        options.getChildren().addAll(check, hint, solve, restart, load);
+        window.setBottom(options);
         GridPane safe=new GridPane();
-
-        buttonDemo(stage);  // this can be removed/altered
+        for (int row=0; row<this.model.getRows(); row++) {
+            for (int col=0; col<this.model.getCols(); col++) {
+                if (this.model.getFloor()[row][col].equals("X")) {
+                    Button pillar=new Button();
+                    pillar.setGraphic(new ImageView("resources/pillarX.png"));
+                    safe.add(pillar, col, row);
+                } else if(this.model.getFloor()[row][col].equals("0")||this.model.getFloor()[row][col].equals("1")
+                ||this.model.getFloor()[row][col].equals("2")||this.model.getFloor()[row][col].equals("3")
+                                                                ||this.model.getFloor()[row][col].equals("4")) {
+                    String thing= this.model.getFloor()[row][col];
+                    Button pillar=new Button();
+                    pillar.setGraphic(new ImageView("resources/pillar"+thing+".png"));
+                    safe.add(pillar, col,row);
+                } else {
+                    Button tile=new Button();
+                    tile.setGraphic(new ImageView("resources/white.png"));
+                    safe.add(tile, col, row);
+                }
+            }
+        }
+        window.setCenter(safe);
+        Scene scene=new Scene(window);
+        stage.setScene(scene);
+//        buttonDemo(stage);  // this can be removed/altered
     }
 
     @Override
@@ -129,6 +164,7 @@ public class LasersGUI extends Application implements Observer<LasersModel, Mode
 
         stage.setTitle("Lasers GUI");
         stage.show();
+        this.started=true;
     }
 
     @Override
