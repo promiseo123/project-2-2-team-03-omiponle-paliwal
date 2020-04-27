@@ -165,21 +165,19 @@ public class LasersModel {
                     case "*":
                         if ((row - 1 >= 0) || (row + 1 < this.rows)) {
                             for (int d = row - 1; d >= 0; d--) {
-                                if (this.floor[d][c].equals("L") || this.floor[d][c].equals("0") || this.floor[d][c].equals("1")
-                                        || this.floor[d][c].equals("2") || this.floor[d][c].equals("3")
-                                        || this.floor[d][c].equals("4")) {
+                                if (this.floor[d][c].equals("L")) {
                                     break;
+                                } else {
+                                    this.floor[row][c] = ".";
                                 }
                             }
                             for (int e = row + 1; e < this.rows; e++) {
-                                if (this.floor[e][c].equals("L") || this.floor[e][c].equals("0") || this.floor[e][c].equals("1")
-                                        || this.floor[e][c].equals("2") || this.floor[e][c].equals("3")
-                                        || this.floor[e][c].equals("4")) {
+                                if (this.floor[e][c].equals("L")) {
                                     break;
+                                } else {
+                                    this.floor[row][c] = ".";
                                 }
                             }
-                        } else {
-                            this.floor[row][c] = ".";
                         }
                         break;
                     case "X":
@@ -202,21 +200,19 @@ public class LasersModel {
                     case "*":
                         if ((col - 1 >= 0) || (col + 1 < this.cols)) {
                             for (int d = col - 1; d >= 0; d--) {
-                                if (this.floor[row][d].equals("L") || this.floor[row][d].equals("0")
-                                        || this.floor[row][d].equals("1") || this.floor[row][d].equals("2")
-                                        || this.floor[row][d].equals("3") || this.floor[row][d].equals("4")) {
+                                if (this.floor[r][d].equals("L")) {
                                     break;
+                                } else {
+                                    this.floor[r][col] = ".";
                                 }
                             }
                             for (int e = row + 1; e < this.rows; e++) {
-                                if (this.floor[row][e].equals("L") || this.floor[row][e].equals("0")
-                                        || this.floor[row][e].equals("1") || this.floor[row][e].equals("2")
-                                        || this.floor[row][e].equals("3") || this.floor[row][e].equals("4")) {
+                                if (this.floor[e][col].equals("L")) {
                                     break;
+                                } else {
+                                    this.floor[r][col] = ".";
                                 }
                             }
-                        } else {
-                            this.floor[r][col] = ".";
                         }
                         break;
                     case "X":
@@ -240,21 +236,19 @@ public class LasersModel {
                         case "*":
                             if ((row - 1 >= 0) || (row + 1 < this.rows)) {
                                 for (int d = row - 1; d >= 0; d--) {
-                                    if (this.floor[d][c].equals("L") || this.floor[d][c].equals("0")
-                                            || this.floor[d][c].equals("1") || this.floor[d][c].equals("2")
-                                            || this.floor[d][c].equals("3") || this.floor[d][c].equals("4")) {
+                                    if (this.floor[d][c].equals("L")) {
                                         break;
+                                    } else {
+                                        this.floor[row][c] = ".";
                                     }
                                 }
                                 for (int e = row + 1; e < this.rows; e++) {
-                                    if (this.floor[e][c].equals("L") || this.floor[e][c].equals("0")
-                                            || this.floor[e][c].equals("1") || this.floor[e][c].equals("2")
-                                            || this.floor[e][c].equals("3") || this.floor[e][c].equals("4")) {
+                                    if (this.floor[e][c].equals("L")) {
                                         break;
+                                    } else {
+                                        this.floor[row][c] = ".";
                                     }
                                 }
-                            } else {
-                                this.floor[row][c] = ".";
                             }
                             break;
                         case "X":
@@ -279,21 +273,19 @@ public class LasersModel {
                         case "*":
                             if ((col - 1 >= 0) || (col + 1 < this.cols)) {
                                 for (int d = col - 1; d >= 0; d--) {
-                                    if (this.floor[row][d].equals("L") || this.floor[row][d].equals("0")
-                                            || this.floor[row][d].equals("1") || this.floor[row][d].equals("2")
-                                            || this.floor[row][d].equals("3") || this.floor[row][d].equals("4")) {
+                                    if (this.floor[r][d].equals("L")) {
                                         break;
+                                    } else {
+                                        this.floor[r][col] = ".";
                                     }
                                 }
                                 for (int e = row + 1; e < this.rows; e++) {
-                                    if (this.floor[row][e].equals("L") || this.floor[row][e].equals("0")
-                                            || this.floor[row][e].equals("1") || this.floor[row][e].equals("2")
-                                            || this.floor[row][e].equals("3") || this.floor[row][e].equals("4")) {
+                                    if (this.floor[e][col].equals("L")) {
                                         break;
+                                    } else {
+                                        this.floor[r][col] = ".";
                                     }
                                 }
-                            } else {
-                                this.floor[r][col] = ".";
                             }
 
                             break;

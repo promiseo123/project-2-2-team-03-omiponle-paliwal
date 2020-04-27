@@ -136,7 +136,8 @@ public class LasersGUI extends Application implements Observer<LasersModel, Mode
             if (selectedFile != null) {
                 try {
                     model=new LasersModel(selectedFile.getAbsolutePath());
-                } catch (IOException e) {
+                    start(stage);
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -187,9 +188,7 @@ public class LasersGUI extends Application implements Observer<LasersModel, Mode
         } else if (data.getItem().equals("Laser added at: ("+data.getRow()+","+data.getCol()+")")) {
             button.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("resources/laser.png"))));
             setButtonBackground(button, "yellow.png");
-            button.setOnAction(event -> {model.remove(data.getRow(), data.getCol());
-                updateButton(new ModelData(data.getRow(), data.getCol(),
-                        "Laser removed at: ("+data.getRow()+","+data.getCol()+")", Status.OK));});
+            button.setOnAction(event -> model.remove(data.getRow(), data.getCol()));
             for (int c=data.getCol()+1; c<model.getCols(); c++) {
                 if(model.getFloor()[data.getRow()][c].equals("*")) {
                     Button beam=buttons[data.getRow()][c];
@@ -243,50 +242,54 @@ public class LasersGUI extends Application implements Observer<LasersModel, Mode
                 }
             }
         } else if (data.getItem().equals("Laser removed at: ("+data.getRow()+","+data.getCol()+")")) {
-            if (model.getFloor()[data.getRow()][data.getCol()].equals(".")) {
+            if (this.model.getFloor()[data.getRow()][data.getCol()].equals(".")) {
                 button.setGraphic(new ImageView(
                         new Image(getClass().getResourceAsStream("resources/white.png"))));
             }
             for (int c = data.getCol() + 1; c < model.getCols(); c++) {
-                if (model.getFloor()[data.getRow()][c].equals(".")) {
-                    buttons[data.getRow()][c].setGraphic(new ImageView(
+                if (this.model.getFloor()[data.getRow()][c].equals(".")) {
+                    Button tile=buttons[data.getRow()][c];
+                    tile.setGraphic(new ImageView(
                             new Image(getClass().getResourceAsStream("resources/white.png"))));
                     int finalC = c;
-                    buttons[data.getRow()][c].setOnAction(event -> model.add(data.getRow(), finalC));
-                } else if (!model.getFloor()[data.getRow()][c].equals("*")) {
+                    tile.setOnAction(event -> model.add(data.getRow(), finalC));
+                } else if (!this.model.getFloor()[data.getRow()][c].equals("*")) {
                     break;
                 }
             }
             for (int r = data.getRow() + 1; r < model.getRows(); r++) {
-                if (model.getFloor()[r][data.getCol()].equals(".")) {
-                    buttons[r][data.getCol()].setGraphic(new ImageView(
+                if (this.model.getFloor()[r][data.getCol()].equals(".")) {
+                    Button tile=buttons[r][data.getCol()];
+                    tile.setGraphic(new ImageView(
                             new Image(getClass().getResourceAsStream("resources/white.png"))));
                     int finalR = r;
-                    buttons[r][data.getCol()].setOnAction(event -> model.add(finalR, data.getCol()));
-                } else if (!model.getFloor()[r][data.getCol()].equals("*")) {
+                    tile.setOnAction(event -> model.add(finalR, data.getCol()));
+                } else if (!this.model.getFloor()[r][data.getCol()].equals("*")) {
                     break;
                 }
             }
             if (data.getCol()!=0) {
                 for (int c = data.getCol() - 1; c >= 0; c--) {
-                    if (model.getFloor()[data.getRow()][c].equals(".")) {
-                        buttons[data.getRow()][c].setGraphic(new ImageView(
+                    if (this.model.getFloor()[data.getRow()][c].equals(".")) {
+                        Button tile=buttons[data.getRow()][c];
+                        tile.setGraphic(new ImageView(
                                 new Image(getClass().getResourceAsStream("resources/white.png"))));
                         int finalC = c;
-                        buttons[data.getRow()][c].setOnAction(event -> model.add(data.getRow(), finalC));
-                    } else if (!model.getFloor()[data.getRow()][c].equals("*")) {
+                        tile.setOnAction(event -> model.add(data.getRow(), finalC));
+                    } else if (!this.model.getFloor()[data.getRow()][c].equals("*")) {
                         break;
                     }
                 }
             }
             if (data.getRow()!=0) {
                 for (int r = data.getRow() - 1; r >= 0; r--) {
-                    if (model.getFloor()[r][data.getCol()].equals(".")) {
-                        buttons[r][data.getCol()].setGraphic(new ImageView(
+                    if (this.model.getFloor()[r][data.getCol()].equals(".")) {
+                        Button tile=buttons[r][data.getCol()];
+                        tile.setGraphic(new ImageView(
                                 new Image(getClass().getResourceAsStream("resources/white.png"))));
                         int finalR = r;
-                        buttons[r][data.getCol()].setOnAction(event -> model.add(finalR, data.getCol()));
-                    } else if (!model.getFloor()[r][data.getCol()].equals("*")) {
+                        tile.setOnAction(event -> model.add(finalR, data.getCol()));
+                    } else if (!this.model.getFloor()[r][data.getCol()].equals("*")) {
                         break;
                     }
                 }
