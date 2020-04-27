@@ -166,6 +166,13 @@ public class LasersModel {
                         if ((row - 1 >= 0) || (row + 1 < this.rows)) {
                             for (int d = row - 1; d >= 0; d--) {
                                 if (this.floor[d][c].equals("L")) {
+                                    for (int f=d+1; f<=rows; f++) {
+                                        if (this.floor[f][c].equals(".")) {
+                                        this.floor[f][c]="*";
+                                    } else if (!this.floor[f][c].equals("L")) {
+                                            break;
+                                        }
+                                    }
                                     break;
                                 } else {
                                     this.floor[row][c] = ".";
@@ -173,6 +180,13 @@ public class LasersModel {
                             }
                             for (int e = row + 1; e < this.rows; e++) {
                                 if (this.floor[e][c].equals("L")) {
+                                    for (int f=e-1; f>=0; f--) {
+                                        if (this.floor[f][c].equals(".")) {
+                                        this.floor[f][c]="*";
+                                    } else if (!this.floor[f][c].equals("L")) {
+                                            break;
+                                        }
+                                    }
                                     break;
                                 } else {
                                     this.floor[row][c] = ".";
@@ -201,6 +215,13 @@ public class LasersModel {
                         if ((col - 1 >= 0) || (col + 1 < this.cols)) {
                             for (int d = col - 1; d >= 0; d--) {
                                 if (this.floor[r][d].equals("L")) {
+                                    for (int f=d+1; f<=cols; f++) {
+                                        if (this.floor[r][f].equals(".")) {
+                                        this.floor[r][f]="*";
+                                    } else if (!this.floor[r][f].equals("L")) {
+                                            break;
+                                        }
+                                    }
                                     break;
                                 } else {
                                     this.floor[r][col] = ".";
@@ -208,6 +229,13 @@ public class LasersModel {
                             }
                             for (int e = row + 1; e < this.rows; e++) {
                                 if (this.floor[e][col].equals("L")) {
+                                    for (int f=e-1; f>=0; f--) {
+                                        if (this.floor[r][f].equals(".")) {
+                                        this.floor[r][f]="*";
+                                    } else if (!this.floor[r][f].equals("L")) {
+                                            break;
+                                        }
+                                    }
                                     break;
                                 } else {
                                     this.floor[r][col] = ".";
@@ -237,6 +265,13 @@ public class LasersModel {
                             if ((row - 1 >= 0) || (row + 1 < this.rows)) {
                                 for (int d = row - 1; d >= 0; d--) {
                                     if (this.floor[d][c].equals("L")) {
+                                        for (int f=d+1; f<rows; f++) {
+                                            if (!this.floor[f][c].equals("L")) {
+                                                break;
+                                            } else if (this.floor[f][c].equals(".")) {
+                                                this.floor[f][c]="*";
+                                            }
+                                        }
                                         break;
                                     } else {
                                         this.floor[row][c] = ".";
@@ -244,6 +279,13 @@ public class LasersModel {
                                 }
                                 for (int e = row + 1; e < this.rows; e++) {
                                     if (this.floor[e][c].equals("L")) {
+                                        for (int f=e-1; f>=0; f--) {
+                                            if (this.floor[f][c].equals(".")) {
+                                            this.floor[f][c]="*";
+                                        } else if (!this.floor[f][c].equals("L")) {
+                                                break;
+                                            }
+                                        }
                                         break;
                                     } else {
                                         this.floor[row][c] = ".";
@@ -274,13 +316,27 @@ public class LasersModel {
                             if ((col - 1 >= 0) || (col + 1 < this.cols)) {
                                 for (int d = col - 1; d >= 0; d--) {
                                     if (this.floor[r][d].equals("L")) {
+                                        for (int f=d+1; f<cols; f++) {
+                                            if (!this.floor[r][f].equals("L")) {
+                                                break;
+                                            } else if (this.floor[r][f].equals(".")) {
+                                                this.floor[r][f]="*";
+                                            }
+                                        }
                                         break;
                                     } else {
                                         this.floor[r][col] = ".";
                                     }
                                 }
-                                for (int e = row + 1; e < this.rows; e++) {
+                                for (int e = col + 1; e < this.cols; e++) {
                                     if (this.floor[e][col].equals("L")) {
+                                        for (int f=e-1; f>=0; f--) {
+                                            if (this.floor[r][f].equals(".")) {
+                                            this.floor[r][f]="*";
+                                        } else if (!this.floor[r][f].equals("L")) {
+                                                break;
+                                            }
+                                        }
                                         break;
                                     } else {
                                         this.floor[r][col] = ".";

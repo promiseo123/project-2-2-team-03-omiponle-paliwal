@@ -2,6 +2,10 @@ package lasers.model;
 
 import lasers.backtracking.Configuration;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Collection;
 
 /**
@@ -14,14 +18,34 @@ import java.util.Collection;
  * package and/or incorporate it into another class.
  *
  * @author RIT CS
- * @author YOUR NAME HERE
+ * @author Promise Omiponle and Parth Paliwal
  */
 public class SafeConfig implements Configuration {
+    /** The number of rows of tiles on the floor of the Safe. */
+    private int rows;
 
-    public SafeConfig(String filename) {
-        // TODO
+    /** The number of columns of tiles on the floor of the Safe. */
+    private int cols;
+
+    /** A 2-D array that represents the tiles of the Safe floor. */
+    private String[][] floor;
+    private BufferedReader reader;
+    public SafeConfig(String filename) throws IOException {
+        File safeFile = new File(filename);
+        this.reader = new BufferedReader(new FileReader((safeFile)));
+        String text = reader.readLine();
+        String[] cord = text.split(" ");
+        this.rows=Integer.parseInt(cord[0]);
+        this.cols=Integer.parseInt(cord[1]);
+        this.floor=new String[rows][cols];
+        SafeTheBuilder();
     }
 
+    public SafeConfig(SafeConfig other, int rows, int cols) {
+        this.rows=rows;
+        this.cols=cols;
+        this.floor=new String[other.rows][other.cols];
+    }
     @Override
     public Collection<Configuration> getSuccessors() {
         // TODO
@@ -38,5 +62,22 @@ public class SafeConfig implements Configuration {
     public boolean isGoal() {
         // TODO
         return false;
+    }
+
+    public void SafeTheBuilder() {
+        String curLine;
+        String[] splitter;
+        try {
+            for (int i = 0; i < rows; i++) {
+                curLine = reader.readLine();
+                splitter = curLine.split(" ");
+
+                for (int j = 0; j < cols; j++) {
+                    floor[i][j] = splitter[j];
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error opening file");
+        }
     }
 }

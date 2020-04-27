@@ -3,6 +3,7 @@ package lasers.backtracking;
 import lasers.model.SafeConfig;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -13,7 +14,7 @@ import java.util.List;
  * @author RIT CS
  */
 public class SafeSolverPath {
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws IOException {
         if (args.length != 2) {
             System.out.println("Usage: java SafeSolverPath safe.in debug");
         } else {

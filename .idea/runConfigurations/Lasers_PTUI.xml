@@ -3,7 +3,7 @@
     <option name="INCLUDE_PROVIDED_SCOPE" value="true" />
     <option name="MAIN_CLASS_NAME" value="lasers.Lasers" />
     <module name="Lasers2" />
-    <option name="PROGRAM_PARAMETERS" value="ptui tests/4x4safe.txt tests.4x4safe-input.txt" />
+    <option name="PROGRAM_PARAMETERS" value="ptui tests/4x4safe.txt tests/4x4safe-input.txt" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="lasers.*" />
