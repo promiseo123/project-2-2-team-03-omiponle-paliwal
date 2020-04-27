@@ -35,25 +35,25 @@ public class ControllerPTUI  {
 
         if (inputFile != null) {
             try {
-                Scanner in = new Scanner(new File(inputFile));
-                while (in.hasNextLine()) {
-                    String line = in.nextLine();
-                    System.out.println("> " + line);
+                Scanner fileIn = new Scanner(new File(inputFile));
+                while (fileIn.hasNextLine()) {
+                    String line = fileIn.nextLine();
+                    System.out.print("> " + line);
                     String[] cmd = line.split("");
                     cmdPtui(cmd);
                 }
-                in.close();
+                fileIn.close();
             } catch (FileNotFoundException e) {
                 System.out.println(e.getMessage());
             }
         }
         while (true){
-            Scanner newIn = new Scanner(System.in);
-            System.out.println("> ");
-            if(!newIn.hasNextLine()){
+            Scanner userIn = new Scanner(System.in);
+            System.out.print("> ");
+            if(!userIn.hasNextLine()){
                 break;
             }
-            String cmdString = newIn.nextLine();
+            String cmdString = userIn.nextLine();
             String[] cmd = cmdString.split(" ");
 
             cmdPtui(cmd);

@@ -135,8 +135,9 @@ public class LasersGUI extends Application implements Observer<LasersModel, Mode
             File selectedFile = chooser.showOpenDialog(stage);
             if (selectedFile != null) {
                 try {
-                    this.model=new LasersModel(selectedFile.getAbsolutePath());
-                    start(stage);
+                    model=new LasersModel(selectedFile.getAbsolutePath());
+                        start(stage);
+                       // model.display();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -185,14 +186,7 @@ public class LasersGUI extends Application implements Observer<LasersModel, Mode
         Button button=buttons[data.getRow()][data.getCol()];
         if (data.getStatus()==Status.ERROR) {
             setButtonBackground(button, "red.png");
-        } else if (data.getItem().equals(model.getName()+" is fully verified!")) {
-            for (int row=0; row<model.getRows(); row++) {
-                for(int col=0; col<model.getCols(); col++) {
-                    setButtonBackground(buttons[row][col], null);
-                }
-            }
-        }
-            else if (data.getItem().equals("Laser added at: ("+data.getRow()+","+data.getCol()+")")) {
+        } else if (data.getItem().equals("Laser added at: ("+data.getRow()+","+data.getCol()+")")) {
             button.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("resources/laser.png"))));
             setButtonBackground(button, "yellow.png");
             button.setOnAction(event -> model.remove(data.getRow(), data.getCol()));
@@ -252,7 +246,6 @@ public class LasersGUI extends Application implements Observer<LasersModel, Mode
             if (this.model.getFloor()[data.getRow()][data.getCol()].equals(".")) {
                 button.setGraphic(new ImageView(
                         new Image(getClass().getResourceAsStream("resources/white.png"))));
-                button.setOnAction(event -> model.add(data.getRow(), data.getCol()));
             }
             for (int c = data.getCol() + 1; c < model.getCols(); c++) {
                 if (this.model.getFloor()[data.getRow()][c].equals(".")) {
@@ -341,7 +334,7 @@ public class LasersGUI extends Application implements Observer<LasersModel, Mode
 
     @Override
     public void start(Stage stage) throws Exception {
-//        init();
+        init();
         init(stage);  // do all your UI initialization here
 
         stage.setTitle("Lasers GUI");
