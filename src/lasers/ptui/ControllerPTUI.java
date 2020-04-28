@@ -1,11 +1,9 @@
 package lasers.ptui;
 
-import lasers.Lasers;
 import lasers.model.LasersModel;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Arrays;
 import java.util.Scanner;
 
 /**
@@ -85,8 +83,7 @@ public class ControllerPTUI  {
         } else if (cmd.toLowerCase().charAt(0) == 'r') {
             if (adder.length == 3) {
                 model.remove(Integer.parseInt(adder[1]), Integer.parseInt(adder[2]));
-                System.out.println("Laser Removed at (" + adder[1] +"," + adder[2] + ")");
-
+                System.out.println("Laser Removed at (" + adder[1] + "," + adder[2] + ")");
             } else {
                 System.out.println("Incorrect coordinates");
             }
