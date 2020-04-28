@@ -43,7 +43,7 @@ public class ModelData {
     public String getItem() { return this.item; }
 
     /**
-     * Is the card revealed?
+     * Is it revealed?
      *
      * @return is the card revealed (if not it is hidden)
      */
