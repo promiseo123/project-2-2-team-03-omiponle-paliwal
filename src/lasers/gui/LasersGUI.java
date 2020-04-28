@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import lasers.backtracking.Backtracker;
 import lasers.model.*;
 
 /**
@@ -122,7 +123,14 @@ public class LasersGUI extends Application implements Observer<LasersModel, Mode
         this.check.setOnAction(event -> this.model.verify());
         this.hint=new Button("Hint");
         this.solve=new Button("Solve");
-//        this.solve.setOnAction(event -> ;
+        this.solve.setOnAction(event -> {
+            Backtracker tracker=new Backtracker(true);
+            try {
+                tracker.solve(new SafeConfig(getParameters().getRaw().get(0)));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
         this.restart=new Button("Restart");
         this.restart.setOnAction(event -> {
             try {
@@ -178,6 +186,8 @@ public class LasersGUI extends Application implements Observer<LasersModel, Mode
                 }
             }
         }
+        safe.setAlignment(Pos.CENTER);
+        safe.setMaxWidth(Double.MAX_VALUE);
         window.setCenter(safe);
         Scene scene=new Scene(window);
         stage.setScene(scene);
@@ -256,7 +266,7 @@ public class LasersGUI extends Application implements Observer<LasersModel, Mode
                 button.setGraphic(new ImageView(
                         new Image(getClass().getResourceAsStream("resources/white.png"))));
                 button.setOnAction(event -> model.add(data.getRow(), data.getCol()));
-            }
+            } else if (this.model.getFloor()[data.getRow()][data.getCol()].equals("*"))
             for (int c = data.getCol() + 1; c < model.getCols(); c++) {
                 if (this.model.getFloor()[data.getRow()][c].equals(".")) {
                     Button tile=buttons[data.getRow()][c];
@@ -344,7 +354,7 @@ public class LasersGUI extends Application implements Observer<LasersModel, Mode
 
     @Override
     public void start(Stage stage) throws Exception {
-//        init();
+        init();
         init(stage);  // do all your UI initialization here
 
         stage.setTitle("Lasers GUI");
