@@ -33,7 +33,7 @@ public class ControllerPTUI  {
      * @param inputFile The name of the input command file, if specified
      */
     public void run(String inputFile) {
-
+        model.display();
         if (inputFile != null) {
             try {
                 Scanner fileIn = new Scanner(new File(inputFile));
@@ -57,8 +57,8 @@ public class ControllerPTUI  {
             String cmdString = userIn.nextLine();
             String[] cmd = cmdString.split(" ");
 
+
             cmdPtui(cmd);
-            System.out.println(cmdString);
         }
     }
 
@@ -67,11 +67,12 @@ public class ControllerPTUI  {
      * @param adder command
      */
     private void cmdPtui(String[] adder) {
-
         String cmd = Character.toString(adder[0].charAt(0));
         if (cmd.toLowerCase().charAt(0) == 'a') {
             if (adder.length == 3) {
                 model.add(Integer.parseInt(adder[1]), Integer.parseInt(adder[2]));
+                System.out.println("Laser Added at (" + adder[1] +"," + adder[2] + ")");
+
             } else {
                 System.out.println("Incorrect coordinates");
             }
@@ -84,6 +85,8 @@ public class ControllerPTUI  {
         } else if (cmd.toLowerCase().charAt(0) == 'r') {
             if (adder.length == 3) {
                 model.remove(Integer.parseInt(adder[1]), Integer.parseInt(adder[2]));
+                System.out.println("Laser Removed at (" + adder[1] +"," + adder[2] + ")");
+
             } else {
                 System.out.println("Incorrect coordinates");
             }
@@ -94,6 +97,5 @@ public class ControllerPTUI  {
             System.out.println("Unrecognized command " + cmd);
         }
 
-        //System.out.println(cmd);
     }
 }
