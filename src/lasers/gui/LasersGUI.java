@@ -115,12 +115,14 @@ public class LasersGUI extends Application implements Observer<LasersModel, Mode
         BorderPane window=new BorderPane();
         this.message=new Label("");
         this.message.setAlignment(Pos.TOP_CENTER);
+        this.message.setMaxWidth(Double.MAX_VALUE);
         window.setTop(this.message);
         HBox options=new HBox();
         this.check=new Button("Check");
         this.check.setOnAction(event -> this.model.verify());
         this.hint=new Button("Hint");
         this.solve=new Button("Solve");
+//        this.solve.setOnAction(event -> ;
         this.restart=new Button("Restart");
         this.restart.setOnAction(event -> {
             try {

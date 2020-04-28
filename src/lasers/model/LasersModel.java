@@ -376,7 +376,7 @@ public class LasersModel {
         while ( row < this.rows ) {
             col=0;
             while ( col < this.cols ) {
-                if(this.floor[row][col].equals("X")||this.floor[row][col].equals("0")||this.floor[row][col].equals("1")
+                if(this.floor[row][col].equals("0")||this.floor[row][col].equals("1")
                         ||this.floor[row][col].equals("2")||this.floor[row][col].equals("3")
                         ||this.floor[row][col].equals("4")) {
                     int tile=Integer.parseInt(this.floor[row][col]);
