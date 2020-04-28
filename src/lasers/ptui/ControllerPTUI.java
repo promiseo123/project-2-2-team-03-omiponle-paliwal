@@ -5,6 +5,7 @@ import lasers.model.LasersModel;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /**
@@ -57,6 +58,7 @@ public class ControllerPTUI  {
             String[] cmd = cmdString.split(" ");
 
             cmdPtui(cmd);
+            System.out.println(cmdString);
         }
     }
 
@@ -65,6 +67,7 @@ public class ControllerPTUI  {
      * @param adder command
      */
     private void cmdPtui(String[] adder) {
+
         String cmd = Character.toString(adder[0].charAt(0));
         if (cmd.toLowerCase().charAt(0) == 'a') {
             if (adder.length == 3) {
@@ -79,9 +82,8 @@ public class ControllerPTUI  {
         } else if (cmd.toLowerCase().charAt(0) == 'v') {
             model.verify();
         } else if (cmd.toLowerCase().charAt(0) == 'r') {
-            String[] remover = cmd.split(" ");
-            if (remover.length == 3) {
-                model.remove(Integer.parseInt(remover[1]), Integer.parseInt(remover[2]));
+            if (adder.length == 3) {
+                model.remove(Integer.parseInt(adder[1]), Integer.parseInt(adder[2]));
             } else {
                 System.out.println("Incorrect coordinates");
             }
@@ -92,6 +94,6 @@ public class ControllerPTUI  {
             System.out.println("Unrecognized command " + cmd);
         }
 
-        System.out.println(cmd);
+        //System.out.println(cmd);
     }
 }
