@@ -139,6 +139,7 @@ public class LasersGUI extends Application implements Observer<LasersModel, Mode
                 try {
                     this.model=new LasersModel(selectedFile.getAbsolutePath());
                     start(stage);
+                    //ee
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
