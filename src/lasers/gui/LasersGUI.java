@@ -17,7 +17,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import lasers.backtracking.Backtracker;
 import lasers.model.*;
 
 /**
@@ -116,21 +115,12 @@ public class LasersGUI extends Application implements Observer<LasersModel, Mode
         BorderPane window=new BorderPane();
         this.message=new Label("");
         this.message.setAlignment(Pos.TOP_CENTER);
-        this.message.setMaxWidth(Double.MAX_VALUE);
         window.setTop(this.message);
         HBox options=new HBox();
         this.check=new Button("Check");
         this.check.setOnAction(event -> this.model.verify());
         this.hint=new Button("Hint");
         this.solve=new Button("Solve");
-        this.solve.setOnAction(event -> {
-            Backtracker tracker=new Backtracker(true);
-            try {
-                tracker.solve(new SafeConfig(getParameters().getRaw().get(0)));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
         this.restart=new Button("Restart");
         this.restart.setOnAction(event -> {
             try {
@@ -145,9 +135,8 @@ public class LasersGUI extends Application implements Observer<LasersModel, Mode
             File selectedFile = chooser.showOpenDialog(stage);
             if (selectedFile != null) {
                 try {
-                    this.model=new LasersModel(selectedFile.getAbsolutePath());
+                    model=new LasersModel(selectedFile.getAbsolutePath());
                     start(stage);
-                    //ee
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -186,8 +175,6 @@ public class LasersGUI extends Application implements Observer<LasersModel, Mode
                 }
             }
         }
-        safe.setAlignment(Pos.CENTER);
-        safe.setMaxWidth(Double.MAX_VALUE);
         window.setCenter(safe);
         Scene scene=new Scene(window);
         stage.setScene(scene);
@@ -198,14 +185,7 @@ public class LasersGUI extends Application implements Observer<LasersModel, Mode
         Button button=buttons[data.getRow()][data.getCol()];
         if (data.getStatus()==Status.ERROR) {
             setButtonBackground(button, "red.png");
-        } else if (data.getItem().equals(model.getName()+" is fully verified!")) {
-            for (int row=0; row<model.getRows(); row++) {
-                for(int col=0; col<model.getCols(); col++) {
-                    setButtonBackground(buttons[row][col], null);
-                }
-            }
-        }
-            else if (data.getItem().equals("Laser added at: ("+data.getRow()+","+data.getCol()+")")) {
+        } else if (data.getItem().equals("Laser added at: ("+data.getRow()+","+data.getCol()+")")) {
             button.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("resources/laser.png"))));
             setButtonBackground(button, "yellow.png");
             button.setOnAction(event -> model.remove(data.getRow(), data.getCol()));
@@ -265,8 +245,7 @@ public class LasersGUI extends Application implements Observer<LasersModel, Mode
             if (this.model.getFloor()[data.getRow()][data.getCol()].equals(".")) {
                 button.setGraphic(new ImageView(
                         new Image(getClass().getResourceAsStream("resources/white.png"))));
-                button.setOnAction(event -> model.add(data.getRow(), data.getCol()));
-            } else if (this.model.getFloor()[data.getRow()][data.getCol()].equals("*"))
+            }
             for (int c = data.getCol() + 1; c < model.getCols(); c++) {
                 if (this.model.getFloor()[data.getRow()][c].equals(".")) {
                     Button tile=buttons[data.getRow()][c];

@@ -1,6 +1,7 @@
 package lasers.backtracking;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -81,7 +82,26 @@ public class Backtracker {
      * If there are none, return null.
      */
     public List<Configuration> solveWithPath(Configuration current) {
-        // TODO
-        return new ArrayList<>();  // change this
-    }
+        List<Configuration> path= new ArrayList<>();
+        debugPrint("Current config", current);
+        if (current.isGoal()) {
+            debugPrint("\tGoal config", current);
+            path.add(current);
+            return path;
+        } else {
+            for (Configuration child : current.getSuccessors()) {
+                if (child.isValid()) {
+                    debugPrint("\tValid successor", child);
+                    path = solveWithPath(child);
+                    if (path!= null) {
+                        path.add(child);
+                        return path;
+                    }
+                } else {
+                    debugPrint("\tInvalid successor", child);
+                }
+            }
+            // implicit backtracking happens here
+        }
+        return path;    }
 }
